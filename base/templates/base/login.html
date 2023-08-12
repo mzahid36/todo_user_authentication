@@ -1,7 +1,29 @@
+{% extends 'base/main.html' %}
+{% block content %}
+
+<div class="header-bar">
 <h3>Login</h3>
-<form method="post">
+</div>
+<div class="card-body">
+<form method="post" novalidate>
     {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Login">
-    <p>Don't have an account? <a href="">Register here.</a></p>
+    {% for fm in form %}
+    {{fm.label_tag}}{{fm}} 
+    <small  style="color: #DD0627; display:block;">{{fm.errors|striptags}}</small>
+    {% endfor %}
+    <input type="submit" value="Login" class="button" style="margin-top:10px ;">
+    <p>Don't have an account? <a href="{% url 'register' %}">Register here.</a></p>
 </form>
+
+    {% if form.non_field_errors %}
+    <div class="errors">
+    {% for error in form.non_field_errors %}
+    <p class="alert alert-danger my-3">
+    {{error}}
+    </p>
+    {% endfor %}
+</div>
+    {% endif %}
+
+</div>
+{% endblock content %}
